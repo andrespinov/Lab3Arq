@@ -63,7 +63,7 @@ public class Cliente extends JFrame implements ActionListener {
      * Método de configuración general de la ventana.
      */
     private void configurarVentana() {
-        this.setTitle("Calcular áreas y volúmenes");
+        this.setTitle("Calcular areas y volumenes");
         this.setSize(600, 500);
         this.setLocationRelativeTo(null);
         this.setLayout(null);
@@ -97,13 +97,13 @@ public class Cliente extends JFrame implements ActionListener {
         checkAux = new JCheckBox();
 
         // configuramos los componentes
-        titulo.setText("Calcula el área o volúmen de alguna de las siguientes figuras:");
+        titulo.setText("Calcula el area o volúmen de alguna de las siguientes figuras:");
         titulo.setBounds(50, 30, 400, 25);
         subtitulo.setText("Seleccione la operación e ingrese los valores.");
         subtitulo.setBounds(250, 120, 400, 25);
         
         checkA.setBounds(300, 180, 80, 20);
-        checkA.setText("Área");
+        checkA.setText("Area");
         checkV.setBounds(300, 200, 80, 20);
         checkV.setText("Volumen");
         
@@ -179,7 +179,7 @@ public class Cliente extends JFrame implements ActionListener {
                 try {
                     //Parseo de los datos ingresados
                     double x = Double.parseDouble(v1.getText());
-                    double y = Double.parseDouble(v2.getText());
+                    double y = 0;
                     //Llamada a la llamada de la insatncia remota según el tipo de figura geométrica escogida
                     if(checkAux == checkCubo){
                         figura = (FiguraGeometricaRemota) Naming.lookup("//localhost/cubo");
@@ -187,8 +187,10 @@ public class Cliente extends JFrame implements ActionListener {
                         figura = (FiguraGeometricaRemota) Naming.lookup("//localhost/esfera");
                     } else if(checkAux == checkCilindro){
                         figura = (FiguraGeometricaRemota) Naming.lookup("//localhost/cilindro");
+                        y = Double.parseDouble(v2.getText());
                     } else{
                         figura = (FiguraGeometricaRemota) Naming.lookup("//localhost/cono");
+                        y = Double.parseDouble(v2.getText());
                     }
                     //Llamado a la ventana emergente que mostrará el área o volumen de la figura segpun lo escogido
                     if(!checkA.isSelected()){
@@ -206,7 +208,7 @@ public class Cliente extends JFrame implements ActionListener {
                 } catch (RemoteException ex) {
                     Logger.getLogger(Cliente.class.getName()).log(Level.SEVERE, null, ex);
                 }catch (NumberFormatException ex){
-                    JOptionPane.showMessageDialog(this, "Ingrese valores permitidos en el/los campos."); 
+                    JOptionPane.showMessageDialog(this, "Ingrese valores permitidos en el-los campos."); 
                 }
             } 
         } else if (e.getSource() == checkCubo){
