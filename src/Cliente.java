@@ -1,10 +1,15 @@
-
 /**
  * Clase cliente correspondiente a la vista del usuario.
  */
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.net.MalformedURLException;
+import java.rmi.Naming;
+import java.rmi.NotBoundException;
+import java.rmi.RemoteException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -42,6 +47,8 @@ public class Cliente extends JFrame implements ActionListener {
     private JCheckBox checkV;
     //Variable auxiliar correspondiente al check seleccionado
     private JCheckBox checkAux;
+    //La variable que contendrá el tipo de figura dependiendo la acción
+    private FiguraGeometricaRemota figura;
 
     /**
      * Método constructor que usará el constructor de JFrame e inicializará los componentes a utilizar.
@@ -106,7 +113,9 @@ public class Cliente extends JFrame implements ActionListener {
         
         tv2.setText("Altura:");
         tv2.setBounds(300, 300, 50, 25);
+        tv2.setVisible(false);
         v2.setBounds(350, 300, 50, 25);
+        v2.setVisible(false);
 
         cubo.setBounds(50, 70, 110, 90);
         cubo.setIcon(new ImageIcon(getClass().
@@ -163,23 +172,75 @@ public class Cliente extends JFrame implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if(e.getSource() == boton){
-            JOptionPane.showMessageDialog(this, "Soy el botón");  
+            if(!checkA.isSelected() && !checkV.isSelected()){
+                //En caso de que no se seleccione alguna opción entre área y volumen
+                JOptionPane.showMessageDialog(this, "Seleccione al menos una de las opciones."); 
+            } else{
+                try {
+                    //Parseo de los datos ingresados
+                    double x = Double.parseDouble(v1.getText());
+                    double y = Double.parseDouble(v2.getText());
+                    //Llamada a la llamada de la insatncia remota según el tipo de figura geométrica escogida
+                    if(checkAux == checkCubo){
+                        figura = (FiguraGeometricaRemota) Naming.lookup("//localhost/cubo");
+                    } else if(checkAux == checkEsfera){
+                        figura = (FiguraGeometricaRemota) Naming.lookup("//localhost/esfera");
+                    } else if(checkAux == checkCilindro){
+                        figura = (FiguraGeometricaRemota) Naming.lookup("//localhost/cilindro");
+                    } else{
+                        figura = (FiguraGeometricaRemota) Naming.lookup("//localhost/cono");
+                    }
+                    //Llamado a la ventana emergente que mostrará el área o volumen de la figura segpun lo escogido
+                    if(!checkA.isSelected()){
+                        JOptionPane.showMessageDialog(this,"El volumen de la figura es: " + figura.volumen(x, y));
+                    } else if(!checkV.isSelected()){
+                        JOptionPane.showMessageDialog(this,"El area de la figura es: " + figura.area(x, y));
+                    } else{
+                        JOptionPane.showMessageDialog(this,"El area de la figura es: " + figura.area(x, y) +
+                        "\nEl área de la figura es: " + figura.area(x, y));
+                    }
+                } catch (NotBoundException ex) {
+                    Logger.getLogger(Cliente.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (MalformedURLException ex) {
+                    Logger.getLogger(Cliente.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (RemoteException ex) {
+                    Logger.getLogger(Cliente.class.getName()).log(Level.SEVERE, null, ex);
+                }catch (NumberFormatException ex){
+                    JOptionPane.showMessageDialog(this, "Ingrese valores permitidos en el/los campos."); 
+                }
+            } 
         } else if (e.getSource() == checkCubo){
             checkAux.setSelected(false);
             checkCubo.setSelected(true);
             checkAux = checkCubo;
+            
+            tv1.setText("Lado:");
+            tv2.setVisible(false);
+            v2.setVisible(false);
         } else if(e.getSource() == checkEsfera){
             checkAux.setSelected(false);
             checkEsfera.setSelected(true);
             checkAux = checkEsfera;
+            
+            tv1.setText("Radio:");
+            tv2.setVisible(false);
+            v2.setVisible(false);
         } else if(e.getSource() == checkCilindro){
             checkAux.setSelected(false);
             checkCilindro.setSelected(true);
             checkAux = checkCilindro;
+            
+            tv1.setText("Radio:");
+            tv2.setVisible(true);
+            v2.setVisible(true);
         } else if(e.getSource() == checkCono){
             checkAux.setSelected(false);
             checkCono.setSelected(true);
             checkAux = checkCono;
+            
+            tv1.setText("Radio:");
+            tv2.setVisible(true);
+            v2.setVisible(true);
         }
     }
 

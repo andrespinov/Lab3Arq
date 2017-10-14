@@ -7,6 +7,6 @@ import java.rmi.*;
 
 public interface FiguraGeometricaRemota extends Remote{
     
-    public double volumen() throws RemoteException;
-    public double area() throws RemoteException;
+    public double volumen(double x, double y) throws RemoteException;
+    public double area(double x, double y) throws RemoteException;
 }
