@@ -97,9 +97,9 @@ public class Cliente extends JFrame implements ActionListener {
         checkAux = new JCheckBox();
 
         // configuramos los componentes
-        titulo.setText("Calcula el area o volúmen de alguna de las siguientes figuras:");
+        titulo.setText("Calcula el area o volumen de alguna de las siguientes figuras:");
         titulo.setBounds(50, 30, 400, 25);
-        subtitulo.setText("Seleccione la operación e ingrese los valores.");
+        subtitulo.setText("Seleccione la operacion e ingrese los valores.");
         subtitulo.setBounds(250, 120, 400, 25);
         
         checkA.setBounds(300, 180, 80, 20);
@@ -199,7 +199,7 @@ public class Cliente extends JFrame implements ActionListener {
                         JOptionPane.showMessageDialog(this,"El area de la figura es: " + figura.area(x, y));
                     } else{
                         JOptionPane.showMessageDialog(this,"El area de la figura es: " + figura.area(x, y) +
-                        "\nEl área de la figura es: " + figura.area(x, y));
+                        "\nEl volumen de la figura es: " + figura.volumen(x, y));
                     }
                 } catch (NotBoundException ex) {
                     Logger.getLogger(Cliente.class.getName()).log(Level.SEVERE, null, ex);
