@@ -1,7 +1,5 @@
 
-import java.net.MalformedURLException;
 import java.rmi.Naming;
-import java.rmi.RemoteException;
 
 
 /**
@@ -10,6 +8,7 @@ import java.rmi.RemoteException;
 public class Servidor {
 
     public static void main(String[] args) throws Exception {
+        //Instancia de las figuras geométricas según sus tipos
         FiguraGeometricaRemota cubo = new Cubo();
         Naming.rebind("cubo", cubo);
         FiguraGeometricaRemota cilindro = new Cilindro();
